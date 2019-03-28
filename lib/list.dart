@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_posts/data/repository.dart';
 import 'package:flutter_posts/model/post_model.dart';
@@ -18,6 +20,7 @@ class _PostListScreenState extends State<PostListScreen> {
   @override
   void initState() {
     _postBloc = PostBloc(widget._repository);
+    _postBloc.loadPosts();
     super.initState();
   }
 
@@ -30,9 +33,10 @@ class _PostListScreenState extends State<PostListScreen> {
             stream: _postBloc.posts,
             initialData: PostsLoadingState(),
             builder: (context, snapshot) {
-              if (snapshot is PostsLoadingState) {
+              if (snapshot.data is PostsLoadingState) {
                 return _buildLoading();
-              } else if (snapshot is PostsDataState) {
+              }
+              if (snapshot.data is PostsDataState) {
                 return _buildContent(snapshot.data);
               }
             }),

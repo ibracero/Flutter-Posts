@@ -12,6 +12,7 @@ class PostApiService {
   Future<PostModelList> getPosts() async {
     final response = await http.get('$url');
     final jsonResponse = json.decode(response.body);
+    await Future.delayed(Duration(seconds: 3));
     return PostModelList.fromJson(jsonResponse);
   }
 }
