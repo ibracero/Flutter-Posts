@@ -14,9 +14,9 @@ class PostBloc {
 
   void loadPosts() {
     _postStreamController.sink.add(PostsViewState._loading());
-    _repository.getPosts().then(posts){
-      _postStreamController.sink.add(PostState._postData(posts))
-    }
+    _repository.getPosts().then((posts) {
+      _postStreamController.sink.add(PostsViewState._postData(posts));
+    });
   }
 
   void dispose() {
@@ -27,17 +27,15 @@ class PostBloc {
 class PostsViewState {
   PostsViewState();
 
-  factory PostsViewState._postData(List<PostModel> posts) = PostsDataState;
+  factory PostsViewState._postData(PostModelList posts) = PostsDataState;
 
   factory PostsViewState._loading() = PostsLoadingState;
 }
-
-class PostsInitState extends PostsViewState {}
 
 class PostsLoadingState extends PostsViewState {}
 
 class PostsDataState extends PostsViewState {
   PostsDataState(this.posts);
 
-  final List<PostModel> posts;
+  final PostModelList posts;
 }
