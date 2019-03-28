@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_posts/data/repository.dart';
 import 'package:flutter_posts/model/post_model.dart';
@@ -37,7 +35,7 @@ class _PostListScreenState extends State<PostListScreen> {
                 return _buildLoading();
               }
               if (snapshot.data is PostsDataState) {
-                return _buildContent(snapshot.data);
+                return _buildListView(snapshot.data);
               }
             }),
       ),
@@ -50,16 +48,44 @@ class _PostListScreenState extends State<PostListScreen> {
     );
   }
 
-  Widget _buildContent(PostsDataState data) {
+  Widget _buildListView(PostsDataState data) {
     PostModelList _postList = data.posts;
 
-    return Container(
-      child: ListView.builder(itemBuilder: (context, position) {
-        return Card(
-          child: Text(_postList.posts[position].body),
-        );
-      }),
-    );
+    return ListView.builder(itemBuilder: (context, position) {
+      return _buildListViewItem(_postList.posts[position]);
+    });
+  }
+
+  Widget _buildListViewItem(PostModel post) {
+    return Card(
+        child: new Row(
+      children: [
+        Padding(padding: EdgeInsets.all(16), child: getAvatar(post)),
+        Expanded(
+            child: new Column(
+          children: [
+            Padding(
+                padding: EdgeInsets.fromLTRB(0, 8, 16, 8),
+                child: Text(
+                  post.title,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                )),
+            Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 16, 8),
+                child: Text(
+                  post.body,
+                  textAlign: TextAlign.left,
+                ))
+          ],
+          crossAxisAlignment: CrossAxisAlignment.start,
+        ))
+      ],
+    ));
+  }
+
+  Image getAvatar(PostModel post) {
+    return Image.network("https://api.adorable.io/avatars/50/${post.userId}");
   }
 
   @override
