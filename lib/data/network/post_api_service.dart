@@ -12,6 +12,6 @@ class PostApiService {
   Future<PostModelList> getPosts() async {
     final response = await http.get('$url');
     final jsonResponse = json.decode(response.body);
-    return PostModelList.fromJson(jsonResponse);
+    return PostModelList.fromMap(jsonResponse);
   }
 }

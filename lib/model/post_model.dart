@@ -12,12 +12,16 @@ class PostModel {
   final String title;
   final String body;
 
-  factory PostModel.fromJson(Map<String, dynamic> json) {
+  factory PostModel.fromMap(Map<String, dynamic> json) {
     return new PostModel(
         userId: json['userId'],
         id: json['id'],
         title: json['title'],
         body: json['body']);
+  }
+
+  Map<String, dynamic> toMap() {
+    return {'user_id': userId, 'id': id, 'title': title, 'body': body};
   }
 }
 
@@ -26,8 +30,8 @@ class PostModelList {
 
   final List<PostModel> posts;
 
-  factory PostModelList.fromJson(List<dynamic> parsedJson) {
+  factory PostModelList.fromMap(List<dynamic> parsedJson) {
     return new PostModelList(
-        posts: parsedJson.map((i) => PostModel.fromJson(i)).toList());
+        posts: parsedJson.map((i) => PostModel.fromMap(i)).toList());
   }
 }
