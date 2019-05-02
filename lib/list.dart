@@ -37,6 +37,9 @@ class _PostListScreenState extends State<PostListScreen> {
               if (snapshot.data is PostsDataState) {
                 return _buildListView(snapshot.data);
               }
+              if (snapshot.data is PostsErrorState) {
+                return _buildError();
+              }
             }),
       ),
     );
@@ -54,6 +57,27 @@ class _PostListScreenState extends State<PostListScreen> {
     return ListView.builder(itemBuilder: (context, position) {
       return _buildListViewItem(_postList.posts[position]);
     });
+  }
+
+  Widget _buildError() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Text(
+          "Something bad happened!",
+          style: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 18, color: Colors.red),
+        ),
+        Center(
+          child: new RaisedButton(
+              padding: const EdgeInsets.all(16.0),
+              textColor: Colors.white,
+              color: Colors.blue,
+              onPressed: _postBloc.loadPosts,
+              child: new Text("Tap to retry")),
+        ),
+      ],
+    );
   }
 
   Widget _buildListViewItem(PostModel post) {

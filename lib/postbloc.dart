@@ -15,7 +15,11 @@ class PostBloc {
   void loadPosts() {
     _postStreamController.sink.add(PostsViewState._loading());
     _repository.getPosts().then((posts) {
-      _postStreamController.sink.add(PostsViewState._postData(posts));
+      if (posts != null && posts.posts.isNotEmpty) {
+        _postStreamController.sink.add(PostsViewState._postData(posts));
+      } else {
+        _postStreamController.sink.add(PostsViewState._error());
+      }
     });
   }
 
@@ -30,6 +34,8 @@ class PostsViewState {
   factory PostsViewState._postData(PostModelList posts) = PostsDataState;
 
   factory PostsViewState._loading() = PostsLoadingState;
+
+  factory PostsViewState._error() = PostsErrorState;
 }
 
 class PostsLoadingState extends PostsViewState {}
@@ -39,3 +45,5 @@ class PostsDataState extends PostsViewState {
 
   final PostModelList posts;
 }
+
+class PostsErrorState extends PostsViewState {}
