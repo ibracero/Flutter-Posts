@@ -8,7 +8,7 @@ import 'package:path_provider/path_provider.dart';
 class DatabaseHelper {
   static const String TABLE_POST = 'Post';
   static const String COLUMN_ID = 'id';
-  static const String COLUMN_USER_ID = 'user_id';
+  static const String COLUMN_USER_ID = 'userId';
   static const String COLUMN_TITLE = 'title';
   static const String COLUMN_BODY = 'body';
 

@@ -6,17 +6,14 @@ import 'package:connectivity/connectivity.dart';
 
 class Repository {
   Future<PostModelList> getPosts() async {
-    PostModelList posts = PostModelList();
     ConnectivityResult result = await Connectivity().checkConnectivity();
 
-    if (result == ConnectivityResult.none) {
-      posts = await DatabaseHelper.db.getPosts();
-    } else {
-      posts = await PostApiService().getPosts();
-      DatabaseHelper.db.insertOrUpdate(posts);
+    if (result != ConnectivityResult.none) {
+      PostModelList apiPosts = await PostApiService().getPosts();
+      DatabaseHelper.db.insertOrUpdate(apiPosts);
     }
 
-    return posts;
+    return await DatabaseHelper.db.getPosts();
   }
 
   Future<PostModel> getPost(int postId) async {

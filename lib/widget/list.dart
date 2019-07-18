@@ -87,37 +87,51 @@ class _PostListScreenState extends State<PostListScreen> {
             onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
+                    builder: (_) =>
                         PostDetailScreen(widget._repository, post.id))),
             child: new Row(
               children: [
                 Padding(padding: EdgeInsets.all(16), child: getAvatar(post)),
                 Expanded(
                     child: new Column(
-                  children: [
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(0, 8, 16, 8),
-                        child: Text(
-                          post.title,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        )),
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(0, 0, 16, 8),
-                        child: Text(
-                          post.body,
-                          textAlign: TextAlign.left,
-                        ))
-                  ],
+                  children: [getTitle(post), getBody(post)],
                   crossAxisAlignment: CrossAxisAlignment.start,
                 ))
               ],
             )));
   }
 
-  Image getAvatar(PostModel post) {
-    return Image.network("https://api.adorable.io/avatars/50/${post.userId}");
+  Hero getAvatar(PostModel post) {
+    return Hero(
+        tag: post.id,
+        child: ClipOval(
+            child: Image.network(
+                "https://api.adorable.io/avatars/60/${post.userId}")));
+  }
+
+  Hero getTitle(PostModel post) {
+    return Hero(
+        tag: "${post.id}title",
+        child: Padding(
+            padding: EdgeInsets.fromLTRB(0, 8, 16, 8),
+            child: Material(
+                child: Text(
+              post.title,
+              textAlign: TextAlign.left,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ))));
+  }
+
+  Hero getBody(PostModel post) {
+    return Hero(
+        tag: "${post.id}body",
+        child: Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 16, 8),
+            child: Material(
+                child: Text(
+              post.body,
+              textAlign: TextAlign.left,
+            ))));
   }
 
   @override

@@ -21,7 +21,7 @@ class PostModel {
   }
 
   Map<String, dynamic> toMap() {
-    return {'user_id': userId, 'id': id, 'title': title, 'body': body};
+    return {'userId': userId, 'id': id, 'title': title, 'body': body};
   }
 }
 

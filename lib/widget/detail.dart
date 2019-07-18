@@ -47,25 +47,40 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     return new Container(
       child: new Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          getAvatar(_post),
-          new Padding(
-              padding: EdgeInsets.fromLTRB(16, 32, 16, 0),
-              child: new Text(
-                _post.title,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              )),
-          new Padding(padding: EdgeInsets.all(16), child: new Text(_post.body))
-        ],
+        children: [getAvatar(_post), getTitle(_post), getBody(_post)],
       ),
     );
   }
 
-  Image getAvatar(PostModel post) {
-    return Image.network(
-      "https://api.adorable.io/avatars/500/${post.userId}",
-      fit: BoxFit.cover,
-      height: 300,
-    );
+  Hero getAvatar(PostModel post) {
+    return Hero(
+        tag: post.id,
+        child: Image.network(
+            "https://api.adorable.io/avatars/500/${post.userId}",
+            fit: BoxFit.cover,
+            height: 300));
+  }
+
+  Hero getTitle(PostModel post) {
+    return Hero(
+        tag: "${post.id}title",
+        child: Padding(
+            padding: EdgeInsets.fromLTRB(16, 32, 16, 0),
+            child: Material(
+                child: Text(
+              post.title,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ))));
+  }
+
+  Hero getBody(PostModel post) {
+    return Hero(
+        tag: "${post.id}body",
+        child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Text(
+              post.body,
+              textAlign: TextAlign.left,
+            )));
   }
 }
