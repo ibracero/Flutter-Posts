@@ -30,13 +30,13 @@ class DatabaseHelper {
     String path = join(documentsDirectory.path, "PostDB.db");
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
-          await db.execute("CREATE TABLE $TABLE_POST ("
-              "$COLUMN_ID INTEGER PRIMARY KEY,"
-              "$COLUMN_USER_ID INTEGER,"
-              "$COLUMN_TITLE TEXT,"
-              "$COLUMN_BODY TEXT"
-              ")");
-        });
+      await db.execute("CREATE TABLE $TABLE_POST ("
+          "$COLUMN_ID INTEGER PRIMARY KEY,"
+          "$COLUMN_USER_ID INTEGER,"
+          "$COLUMN_TITLE TEXT,"
+          "$COLUMN_BODY TEXT"
+          ")");
+    });
   }
 
   void insertOrUpdate(PostModelList postList) async {
@@ -52,5 +52,12 @@ class DatabaseHelper {
   Future<PostModelList> getPosts() async {
     final db = await database;
     return db.query(TABLE_POST).then((posts) => PostModelList.fromMap(posts));
+  }
+
+  Future<PostModel> getPost(int postId) async {
+    final db = await database;
+    return db
+        .query(TABLE_POST, where: "id = $postId")
+        .then((posts) => PostModel.fromMap(posts[0]));
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_posts/data/repository.dart';
-import 'package:flutter_posts/list.dart';
+import 'package:flutter_posts/widget/list.dart';
 
 void main() => runApp(MyApp());
 

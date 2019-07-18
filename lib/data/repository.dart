@@ -18,4 +18,8 @@ class Repository {
 
     return posts;
   }
+
+  Future<PostModel> getPost(int postId) async {
+    return await DatabaseHelper.db.getPost(postId);
+  }
 }
