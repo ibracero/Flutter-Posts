@@ -88,7 +88,7 @@ class _PostListScreenState extends State<PostListScreen> {
                 context,
                 MaterialPageRoute(
                     builder: (_) =>
-                        PostDetailScreen(widget._repository, post.id))),
+                        PostDetailScreen(widget._repository, post))),
             child: new Row(
               children: [
                 Padding(padding: EdgeInsets.all(16), child: getAvatar(post)),

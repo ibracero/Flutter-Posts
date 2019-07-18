@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter_posts/data/network/post_api_service.dart';
+import 'package:flutter_posts/model/comment_model.dart';
 import 'package:flutter_posts/model/post_model.dart';
 import 'package:flutter_posts/data/local/database.dart';
 import 'package:connectivity/connectivity.dart';
@@ -18,5 +19,10 @@ class Repository {
 
   Future<PostModel> getPost(int postId) async {
     return await DatabaseHelper.db.getPost(postId);
+  }
+
+  Future<CommentModelList> getComments(int postId) async {
+    CommentModelList list = await PostApiService().getComments(postId);
+    return list;
   }
 }

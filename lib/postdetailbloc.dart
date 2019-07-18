@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_posts/data/repository.dart';
-import 'package:flutter_posts/model/post_model.dart';
+import 'package:flutter_posts/model/comment_model.dart';
 
 class PostDetailsBloc {
   PostDetailsBloc(this._repository);
@@ -10,12 +10,13 @@ class PostDetailsBloc {
 
   final _postStreamController = StreamController<PostDetailsViewState>();
 
-  Stream<PostDetailsViewState> get post => _postStreamController.stream;
+  Stream<PostDetailsViewState> get comments => _postStreamController.stream;
 
-  void getPost(int postId) {
-    _repository.getPost(postId).then((post) {
-      if (post != null) {
-        _postStreamController.sink.add(PostDetailsViewState._postData(post));
+  void getComments(int postId) {
+    _repository.getComments(postId).then((comments) {
+      if (comments != null) {
+        _postStreamController.sink
+            .add(PostDetailsViewState._commentsData(comments));
       } else {
         _postStreamController.sink.add(PostDetailsViewState._error());
       }
@@ -30,17 +31,20 @@ class PostDetailsBloc {
 class PostDetailsViewState {
   PostDetailsViewState();
 
-  factory PostDetailsViewState._postData(PostModel post) = PostDetailsDataState;
+  factory PostDetailsViewState._commentsData(CommentModelList comments) =
+      PostDetailsDataState;
+
+  factory PostDetailsViewState._loading() = PostDetailsLoadingState;
 
   factory PostDetailsViewState._error() = PostDetailsErrorState;
 }
 
-class PostsLoadingState extends PostDetailsViewState {}
+class PostDetailsLoadingState extends PostDetailsViewState {}
 
 class PostDetailsDataState extends PostDetailsViewState {
-  PostDetailsDataState(this.postDetails);
+  PostDetailsDataState(this.comments);
 
-  final PostModel postDetails;
+  final CommentModelList comments;
 }
 
 class PostDetailsErrorState extends PostDetailsViewState {}
