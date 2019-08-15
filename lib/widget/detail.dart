@@ -26,8 +26,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Stack(children: [
+    return SingleChildScrollView(
+        child: Stack(children: [
       _buildDetailsView(widget._post),
       new AppBar(
         backgroundColor: Colors.transparent,
@@ -38,31 +38,32 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
   Widget _buildDetailsView(PostModel post) {
     return new Container(
+        color: Theme.of(context).accentColor,
         child: new Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        getAvatar(post),
-        getTitle(post),
-        getBody(post),
-        new SafeArea(
-            child: StreamBuilder<PostDetailsViewState>(
-                initialData: PostDetailsLoadingState(),
-                stream: _detailsBloc.comments,
-                builder: (context, snapshot) {
-                  if (snapshot.data is PostDetailsLoadingState) {
-                    return _buildLoading();
-                  }
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            getAvatar(post),
+            getTitle(post),
+            getBody(post),
+            new SafeArea(
+                child: StreamBuilder<PostDetailsViewState>(
+                    initialData: PostDetailsLoadingState(),
+                    stream: _detailsBloc.comments,
+                    builder: (context, snapshot) {
+                      if (snapshot.data is PostDetailsLoadingState) {
+                        return _buildLoading();
+                      }
 
-                  if (snapshot.data is PostDetailsDataState) {
-                    return _buildCommentsView(snapshot.data);
-                  }
+                      if (snapshot.data is PostDetailsDataState) {
+                        return _buildCommentsView(snapshot.data);
+                      }
 
-                  if (snapshot.data is PostDetailsErrorState) {
-                    return Container();
-                  }
-                }))
-      ],
-    ));
+                      if (snapshot.data is PostDetailsErrorState) {
+                        return Container();
+                      }
+                    }))
+          ],
+        ));
   }
 
   Widget _buildLoading() {
@@ -73,13 +74,24 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
   Widget _buildCommentsView(PostDetailsDataState data) {
     CommentModelList _comments = data.comments;
-    return ListView.builder(
-        itemCount: _comments.comments.length,
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemBuilder: (context, position) {
-          return _buildCommentItem(_comments.comments[position]);
-        });
+    return new Container(
+        color: Color.fromARGB(10, 256, 256, 256),
+        child: Column(
+          children: <Widget>[
+            Padding(
+                padding: EdgeInsets.fromLTRB(0, 16, 0, 8),
+                child: Text("Comments",
+                    style: Theme.of(context).textTheme.headline)),
+            ListView.builder(
+                itemCount: _comments.comments.length,
+                scrollDirection: Axis.vertical,
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (context, position) {
+                  return _buildCommentItem(_comments.comments[position]);
+                })
+          ],
+        ));
   }
 
   Widget _buildCommentItem(CommentModel comment) {
@@ -88,14 +100,16 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         children: [
           Expanded(
               child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                  padding: EdgeInsets.fromLTRB(16, 16, 16, 4),
-                  child: Text(comment.name,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 12))),
+                  padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+                  child: Text(
+                    comment.name,
+                    style: Theme.of(context).textTheme.title,
+                  )),
               Padding(
-                  padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
                   child: Text(
                     comment.body,
                     style: TextStyle(fontSize: 12),
@@ -122,10 +136,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         child: Padding(
             padding: EdgeInsets.fromLTRB(16, 32, 16, 0),
             child: Material(
+                color: Colors.white,
                 child: Text(
-              post.title,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            ))));
+                  post.title,
+                  style: Theme.of(context).textTheme.headline,
+                ))));
   }
 
   Hero getBody(PostModel post) {
@@ -134,10 +149,12 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         child: Padding(
             padding: EdgeInsets.all(16),
             child: Material(
+                color: Colors.white,
                 child: Text(
-              post.body,
-              textAlign: TextAlign.left,
-            ))));
+                  post.body,
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.body1,
+                ))));
   }
 
   @override

@@ -115,11 +115,12 @@ class _PostListScreenState extends State<PostListScreen> {
         child: Padding(
             padding: EdgeInsets.fromLTRB(0, 8, 16, 8),
             child: Material(
+                color: Colors.white,
                 child: Text(
-              post.title,
-              textAlign: TextAlign.left,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ))));
+                  post.title,
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.title,
+                ))));
   }
 
   Hero getBody(PostModel post) {
@@ -128,10 +129,12 @@ class _PostListScreenState extends State<PostListScreen> {
         child: Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 16, 8),
             child: Material(
+                color: Colors.white,
                 child: Text(
-              post.body,
-              textAlign: TextAlign.left,
-            ))));
+                  post.body,
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.body1,
+                ))));
   }
 
   @override
